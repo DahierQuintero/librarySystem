@@ -3,8 +3,12 @@ package com.test.librarySystem.controllers;
 import com.test.librarySystem.dtos.request.BookDTO;
 import com.test.librarySystem.dtos.request.UpdateBookDTO;
 import com.test.librarySystem.dtos.response.BookDetailsDTO;
+import com.test.librarySystem.dtos.response.SimpleMessageResponse;
 import com.test.librarySystem.services.impl.BookServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
@@ -17,18 +21,27 @@ public class BookController {
     }
 
     @PostMapping()
-    public BookDetailsDTO create (@RequestBody BookDTO book) {
+    public ResponseEntity<?> create(@RequestBody BookDTO book) {
         return bookService.create(book);
     }
 
     @GetMapping("/{id}")
-    public BookDetailsDTO getBookById(@PathVariable Long id) {
+    public ResponseEntity<?> getBookById(@PathVariable Long id) {
         return bookService.getBookById(id);
     }
 
     @PutMapping("/{id}")
-    public BookDetailsDTO update(@PathVariable Long id, @RequestBody UpdateBookDTO updateBook) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UpdateBookDTO updateBook) {
         return bookService.update(id, updateBook);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return bookService.delete(id);
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> getAllBooks() {
+        return bookService.getAllBooks();
+    }
 }
