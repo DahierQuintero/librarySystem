@@ -1,0 +1,74 @@
+package com.test.librarySystem.services.impl;
+
+import com.test.librarySystem.dtos.request.BookDTO;
+import com.test.librarySystem.dtos.request.UpdateBookDTO;
+import com.test.librarySystem.dtos.response.BookDetailsDTO;
+import com.test.librarySystem.entities.Book;
+import com.test.librarySystem.repositories.BookRepository;
+import com.test.librarySystem.services.IBookService;
+import com.test.librarySystem.utils.ConvertBook;
+import com.test.librarySystem.utils.Status;
+import org.springframework.stereotype.Service;
+
+@Service
+public class BookServiceImpl implements IBookService {
+
+    private final BookRepository bookRepository;
+
+    public BookServiceImpl(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    @Override
+    public BookDetailsDTO create(BookDTO book) {
+        Book bookToSave = ConvertBook.bookDTOToBook(book);
+
+        bookRepository.save(bookToSave);
+
+        return new BookDetailsDTO(
+                bookToSave.getId(),
+                bookToSave.getTitle(),
+                bookToSave.getAuthor(),
+                bookToSave.getPublishedDate(),
+                bookToSave.getIsbn(),
+                bookToSave.getStatus());
+    }
+
+    @Override
+    public BookDetailsDTO getBookById(Long id) {
+        Book bookFound = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book with id " + id + " does not exist"));
+        return new BookDetailsDTO(
+                bookFound.getId(),
+                bookFound.getTitle(),
+                bookFound.getAuthor(),
+                bookFound.getPublishedDate(),
+                bookFound.getIsbn(),
+                bookFound.getStatus()
+        );
+    }
+
+    @Override
+    public BookDetailsDTO update(Long id, UpdateBookDTO updateBook) {
+        Book bookFound = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book with id " + id + " does not exist"));
+
+        bookFound.setTitle(updateBook.title());
+        bookFound.setAuthor(updateBook.author());
+        bookFound.setPublishedDate(updateBook.publishedDate());
+        bookFound.setIsbn(updateBook.isbn());
+        bookFound.setStatus(Status.stringToEnum(updateBook.status()));
+
+        bookRepository.save(bookFound);
+
+        return new BookDetailsDTO(
+                bookFound.getId(),
+                bookFound.getTitle(),
+                bookFound.getAuthor(),
+                bookFound.getPublishedDate(),
+                bookFound.getIsbn(),
+                bookFound.getStatus()
+        );
+    }
+
+}
