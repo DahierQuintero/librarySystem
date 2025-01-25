@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -15,8 +16,7 @@ public record UpdateBookDTO(
         @NotEmpty(message = "The author cannot be null or empty")
         @NotBlank(message = "The author cannot be blank spaces")
         String author,
-        @NotEmpty(message = "The title cannot be null or empty")
-        @NotBlank(message = "The title cannot be blank spaces")
+        @NotNull(message = "The title cannot be null or empty")
         LocalDate publishedDate,
         @NotEmpty(message = "The title cannot be null or empty")
         @NotBlank(message = "The title cannot be blank spaces")
