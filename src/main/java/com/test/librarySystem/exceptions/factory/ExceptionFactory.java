@@ -10,11 +10,7 @@ public final class ExceptionFactory {
     public static ApiException resolve(Exception e) {
         return switch (e.getClass().getSimpleName()) {
             case "NotFoundException" -> build(e.getMessage(), HttpStatus.NOT_FOUND);
-            case  "SignatureException" -> build(e.getMessage(), HttpStatus.UNAUTHORIZED);
-            case "MethodArgumentNotValidException",
-                    "InvalidDefinitionException" -> build(e.getMessage(), HttpStatus.BAD_REQUEST);
-            case "InvalidNameException" -> build(e.getMessage(), HttpStatus.CONFLICT);
-            case "NoResourceFoundException" -> build(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            case "MethodArgumentNotValidException" -> build(e.getMessage(), HttpStatus.BAD_REQUEST);
             default -> build("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
         };
     }
