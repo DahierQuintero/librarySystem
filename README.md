@@ -37,6 +37,23 @@ updating book information and deleting books.
 - Set your username to ```spring.datasource.username```
 - Set your password to ```spring.datasource.password```
 
+## Security
+
+The security configuration is located in the ```SecurityConfig``` class. Below are the key aspects:
+
+### Basic Authentication:
+
+- HTTP Basic Authentication is enabled.
+- Authentication is required for all endpoints in the application.
+
+### In-Memory User:
+
+- A user is defined with a username, encrypted password and roles directly in the configuration.
+  To authenticate:
+  - Username: admin
+  - Password: admin123
+- This is useful for testing or small applications, but not suitable for production.
+
 ## Api endpoints
 
 1. Create a Book

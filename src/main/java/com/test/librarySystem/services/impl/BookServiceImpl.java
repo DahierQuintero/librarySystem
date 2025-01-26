@@ -11,8 +11,10 @@ import com.test.librarySystem.services.IBookService;
 import com.test.librarySystem.utils.ConvertBook;
 import com.test.librarySystem.utils.Status;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements IBookService {
@@ -27,6 +29,12 @@ public class BookServiceImpl implements IBookService {
     public BookDetailsDTO create(BookDTO book) {
 
         Book bookToSave = ConvertBook.bookDTOToBook(book);
+
+        Optional<Book> bookDB = bookRepository.findByIsbn(book.isbn());
+
+        if (bookDB.isPresent()) {
+            throw  new IllegalArgumentException("The book with ISBN " + book.isbn() + " is already exist");
+        }
 
         bookRepository.save(bookToSave);
 
